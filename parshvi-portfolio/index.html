@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parshvi Goyal</title>
+<meta name="description" content="Parshvi Goyal — AI/ML engineer and founding developer at Qord. Projects, case studies and contact.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: deep-space stage. A fixed starfield sits behind every section; one nebula glow lights the hero and the contact block. */
+:root{
+  --ink:#04050c;
+  --ink-2:rgba(12,14,30,.78);
+  --ink-3:#181b36;
+  --paper:#eef0ff;
+  --muted:#9ba1c4;
+  --nebula:#b49bff;
+  --aurora:#7af0d2;
+  --accent:var(--nebula);
+  --accent-2:#ff8fc8;
+  --accent-ink:#06071a;
+  --line:rgba(206,212,255,.13);
+  --display:"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r:18px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+body{margin:0;background:radial-gradient(1200px 800px at 80% -10%,#141a44 0%,transparent 60%),radial-gradient(900px 700px at -10% 40%,#1a0f3a 0%,transparent 60%),var(--ink);background-attachment:fixed;color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);line-height:1.02;margin:0;text-wrap:balance;font-weight:700}
+.wrap{width:min(1200px,100% - 40px);margin-inline:auto}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:flex;gap:10px;align-items:center}
+.eyebrow::before{content:"";width:28px;height:2px;background:currentColor}
+section{padding:110px 0;position:relative}
+.sec-head{display:grid;gap:18px;margin-bottom:48px;max-width:760px}
+.sec-head h2{font-size:clamp(2.4rem,6vw,4.6rem);letter-spacing:-.03em;font-variation-settings:"wdth" 85}
+.sec-head p{color:var(--muted);margin:0;max-width:62ch}
+
+/* progress + nav */
+#progress{position:fixed;inset:0 auto auto 0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--accent);z-index:60;transition:background .5s}
+nav.top{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;display:flex;gap:6px;align-items:center;padding:6px;border-radius:999px;background:rgba(6,8,20,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);max-width:calc(100% - 24px)}
+nav.top a{text-decoration:none;font-size:.86rem;font-weight:600;padding:8px 14px;border-radius:999px;color:var(--paper);white-space:nowrap;transition:background .25s,color .25s}
+nav.top a:hover,nav.top a.on{background:var(--paper);color:var(--ink)}
+nav.top .mark{font-family:var(--display);font-weight:800;background:var(--accent);color:var(--accent-ink);transition:background .5s}
+@media (max-width:760px){nav.top .hide-s{display:none}}
+
+/* hero */
+.hero{padding:0;background:transparent;color:var(--paper);overflow:hidden;position:relative}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(560px 520px at 50% 62%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 70%),radial-gradient(420px 360px at 88% 80%,color-mix(in srgb,var(--accent-2) 26%,transparent),transparent 70%);transition:background .7s;pointer-events:none}
+.warping .hero::before{filter:brightness(1.8) saturate(1.4);transition:filter .3s}
+#stars{position:fixed;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none}
+/* hero: outline headline behind a cut-out portrait, signature, spinning badge, crossed ribbons */
+.stage-h{position:relative;height:clamp(640px,88vh,820px);overflow:hidden}
+.outline{position:absolute;left:clamp(104px,10vw,170px);right:auto;top:clamp(190px,24vh,230px);margin:0;text-align:left;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.9;font-size:clamp(3rem,6.6vw,7rem);font-variation-settings:"wdth" 90;color:transparent;-webkit-text-stroke:2.2px color-mix(in srgb,var(--accent) 92%,#fff);pointer-events:none;user-select:none;transition:transform .5s var(--ease)}
+.outline span{display:block;white-space:nowrap;animation:rise 1s var(--ease) both}
+.outline span:nth-child(2){animation-delay:.08s}.outline span:nth-child(3){animation-delay:.16s}
+@keyframes rise{from{transform:translateY(40px)}to{transform:none}}
+.sig{position:absolute;z-index:4;left:clamp(96px,9vw,160px);right:auto;top:clamp(92px,12vh,118px);margin:0;font-family:"Great Vibes",cursive;font-weight:400;font-size:clamp(2.8rem,5.4vw,5.2rem);line-height:1;color:#fff;transform:rotate(-5deg);text-shadow:0 0 24px color-mix(in srgb,var(--accent) 60%,transparent);letter-spacing:0;white-space:nowrap;animation:sigin 1.2s .3s var(--ease) both}
+@keyframes sigin{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.me{position:absolute;z-index:3;right:clamp(20px,7vw,140px);bottom:0;width:min(440px,33vw);height:auto;max-width:none;filter:drop-shadow(0 0 1px color-mix(in srgb,var(--accent) 70%,#fff)) drop-shadow(0 0 40px color-mix(in srgb,var(--accent) 35%,transparent));animation:mein 1.1s .1s var(--ease) both}
+@keyframes mein{from{transform:translateY(50px)}to{transform:none}}
+.planet{position:absolute;border-radius:50%;z-index:1;transition:transform .5s var(--ease)}
+.planet.p1{width:74px;height:74px;left:50%;top:104px;background:radial-gradient(circle at 32% 30%,#fff 0%,var(--accent) 35%,color-mix(in srgb,var(--accent) 40%,#120f30) 100%);box-shadow:0 0 40px color-mix(in srgb,var(--accent) 55%,transparent)}
+.planet.p1::after{content:"";position:absolute;left:-22px;right:-22px;top:42%;height:14px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent) 70%,#fff);transform:rotate(-18deg)}
+.planet.p2{width:66px;height:66px;left:44%;right:auto;bottom:220px;background:radial-gradient(circle at 30% 30%,#fff3,transparent 40%),linear-gradient(135deg,var(--accent-2),#ffb36b);box-shadow:0 0 40px color-mix(in srgb,var(--accent-2) 50%,transparent)}
+.planet.p3{width:12px;height:12px;left:36%;bottom:40%;background:#fff;box-shadow:0 0 16px 4px var(--accent)}
+.doodle{position:absolute;z-index:2;left:calc(50% + 60px);top:160px;width:150px;height:150px;overflow:visible}
+.doodle path{fill:none;stroke:#e9ebff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:0;animation:draw 1.8s .6s ease both}
+@keyframes draw{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+.spin-badge{position:absolute;z-index:5;right:calc(clamp(20px,7vw,140px) + min(440px,33vw) - 80px);bottom:110px;width:clamp(110px,13vw,160px);aspect-ratio:1;border-radius:50%;background:var(--paper);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 0 0 6px rgba(8,10,24,.6),0 0 40px color-mix(in srgb,var(--accent) 45%,transparent)}
+.spin-badge svg.txt{position:absolute;inset:6%;width:88%;height:88%;animation:spin 16s linear infinite}
+.spin-badge svg.txt text{font-family:var(--display);font-weight:800;font-size:15.5px;letter-spacing:2.2px;fill:var(--accent-ink)}
+.spin-badge .core{width:46%;aspect-ratio:1;border-radius:50%;background:var(--accent-ink);display:grid;place-items:center}
+.spin-badge .core svg{width:60%;height:60%}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ribbons{position:absolute;left:-5%;right:-5%;bottom:20px;height:130px;z-index:4;pointer-events:none}
+.rib{position:absolute;left:0;right:0;overflow:hidden;padding:14px 0;white-space:nowrap}
+.rib .rt{display:inline-flex;gap:46px;animation:scroll 30s linear infinite;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(1.05rem,1.9vw,1.6rem);letter-spacing:.01em}
+.rib .rt span{display:inline-flex;gap:46px;align-items:center}
+.rib .rt span::after{content:"✦"}
+.rib.a{top:34px;background:var(--accent);color:var(--accent-ink);transform:rotate(-3deg);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.rib.b{top:40px;background:#0c0e22;color:var(--muted);transform:rotate(2.4deg);border-block:1px solid var(--line)}
+.rib.b .rt{animation-direction:reverse;animation-duration:40s}
+.hero-sub{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;padding:34px 0 56px}
+.hero-sub .lede{font-size:clamp(1.05rem,1.5vw,1.22rem);line-height:1.55;margin:10px 0 14px;max-width:44em;color:#dfe2fb}
+.hero-sub .lede{color:#fff;font-weight:600}
+.hero-sub .lede b{color:color-mix(in srgb,var(--accent) 70%,#fff);font-weight:800}
+@media (min-width:700px){.hero-sub .lede .it{white-space:nowrap}}
+.hero-sub .lede .sep{color:var(--accent);margin:0 .3em;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);white-space:nowrap}
+.chip.live{border-color:color-mix(in srgb,var(--accent) 60%,transparent);color:var(--accent)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;padding:14px 22px;border-radius:999px;border:2px solid var(--paper);cursor:pointer;font:inherit;font-weight:700;transition:transform .25s var(--ease),background .25s,color .25s,box-shadow .3s}
+.btn:hover{transform:translateY(-3px)}
+.btn .arr{transition:transform .25s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.clock{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.clock b{color:var(--paper);font-weight:600;font-variant-numeric:tabular-nums}
+.dot{width:8px;height:8px;border-radius:50%;background:#5be38d;box-shadow:0 0 0 0 rgba(91,227,141,.6);animation:ping 2s infinite;flex:none}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(91,227,141,0)}100%{box-shadow:0 0 0 0 rgba(91,227,141,0)}}
+@media (max-width:860px){
+  .stage-h{height:clamp(640px,170vw,720px)}
+  .outline{left:0;right:0;text-align:center;top:150px;font-size:clamp(2.4rem,12vw,4.6rem);-webkit-text-stroke:1.5px color-mix(in srgb,var(--accent) 70%,transparent)}
+  .sig{right:auto;left:50%;top:82px;transform:translateX(-50%) rotate(-6deg);font-size:clamp(2.6rem,12vw,3.6rem)}
+  @keyframes sigin{from{opacity:0}to{opacity:1}}
+  .me{width:min(300px,66vw);right:auto;left:50%;transform:translateX(-50%);animation:none}
+  .doodle,.planet.p3{display:none}
+  .planet.p1{width:40px;height:40px;left:18px;top:250px}.planet.p1::after{left:-12px;right:-12px;height:9px}
+  .planet.p2{width:40px;height:40px;bottom:200px;left:16px}
+  .spin-badge{right:10px;bottom:110px;width:92px}
+  .spin-badge svg.txt text{font-size:15px}
+  .ribbons{bottom:6px;height:110px}
+  .hero-sub{grid-template-columns:1fr}
+}
+
+/* stats */
+.stats{padding:0;border-bottom:1px solid var(--line)}
+.stats .wrap{display:grid;grid-template-columns:repeat(6,1fr)}
+.stat{padding:30px 18px;border-left:1px solid var(--line);display:grid;gap:4px}
+.stat:first-child{border-left:0;padding-left:0}
+.stat b{white-space:nowrap;font-family:var(--display);font-size:clamp(1.8rem,3.2vw,2.8rem);font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.stat span{color:var(--muted);font-size:.86rem;line-height:1.35}
+@media (max-width:900px){.stats .wrap{grid-template-columns:repeat(3,1fr)}.stat:nth-child(4){border-left:0;padding-left:0}.stat{border-top:1px solid var(--line)}}
+@media (max-width:520px){.stats .wrap{grid-template-columns:repeat(2,1fr)}.stat{border-left:0;padding-left:0}}
+
+/* marquee */
+.marquee{overflow:hidden;border-bottom:1px solid var(--line);padding:18px 0;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.track{display:flex;gap:44px;width:max-content;animation:scroll 38s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.track span{font-family:var(--display);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;color:var(--muted);display:flex;gap:44px;align-items:center;white-space:nowrap}
+.track span::after{content:"✦";color:var(--accent);font-size:1rem;transition:color .5s}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* reveal (from visible state) */
+.rv{transition:transform .9s var(--ease),opacity .9s var(--ease)}
+.js .rv.pre{transform:translateY(26px);opacity:.55}
+
+/* Qord case study */
+.case{background:var(--ink-2);backdrop-filter:blur(2px)}
+.case-top{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-bottom:56px}
+.brand{display:flex;gap:16px;align-items:center;margin-bottom:22px}
+.brand img{width:64px;height:64px;border-radius:16px;background:#1a1a1a}
+.brand .t{display:grid}
+.brand .t b{font-family:var(--display);font-size:2rem;line-height:1}
+.brand .t span{color:var(--muted);font-size:.9rem}
+.case-top h2{font-size:clamp(2.2rem,5vw,4rem);letter-spacing:-.03em;font-variation-settings:"wdth" 85;margin-bottom:20px}
+.case-top p{color:#d8d3de;margin:0 0 16px}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.fact{background:var(--ink-3);border-radius:14px;padding:16px 18px;display:grid;gap:2px}
+.fact b{font-family:var(--display);font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.fact span{color:var(--muted);font-size:.85rem}
+.role{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px;font-size:.92rem;color:#d8d3de}
+.role .mono{color:var(--accent);display:block;margin-bottom:6px}
+@media (max-width:900px){.case-top{grid-template-columns:1fr;gap:32px}}
+
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.tab{font:inherit;font-weight:600;font-size:.92rem;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--paper);cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.tab:hover{border-color:var(--paper)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.stage{background:rgba(4,5,12,.72);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,3vw,36px);display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center;min-height:520px}
+.stage[hidden]{display:none}
+.stage .txt h3{font-size:clamp(1.7rem,3vw,2.4rem);letter-spacing:-.02em;margin-bottom:12px}
+.stage .txt p{color:#cfc9d6;margin:0 0 14px}
+.stage .txt ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.stage .txt li{display:flex;gap:10px;font-size:.94rem;color:#cfc9d6}
+.stage .txt li::before{content:"→";color:var(--accent);font-family:var(--mono)}
+.note{font-size:.78rem;color:var(--muted);font-family:var(--mono);margin-top:14px}
+@media (max-width:900px){.stage{grid-template-columns:1fr}}
+
+/* phone mockup */
+.phone{width:min(300px,100%);margin-inline:auto;border-radius:40px;padding:10px;background:#0b0a0d;border:1px solid #39343f;box-shadow:0 40px 80px rgba(0,0,0,.45)}
+.screen{border-radius:31px;overflow:hidden;background:#f6f2ea;color:#1c1a17;height:540px;display:flex;flex-direction:column;font-size:13px;position:relative}
+.screen .hdr{height:150px;background-size:cover;background-position:center;position:relative;flex:none;transition:background-image .4s}
+.screen .hdr::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.55))}
+.screen .hdr .ttl{position:absolute;left:14px;bottom:12px;z-index:1;color:#fff}
+.screen .hdr .ttl b{display:block;font-family:var(--display);font-size:1.25rem;line-height:1.05}
+.screen .hdr .ttl span{font-size:.72rem;opacity:.9}
+.steps{display:flex;gap:4px;padding:12px 14px 4px}
+.steps i{flex:1;height:4px;border-radius:4px;background:#ddd5c8;transition:background .4s}
+.steps i.on{background:#c09a6b}
+.stagelbl{padding:2px 14px 8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:#8a7f70}
+.cards{padding:0 12px 12px;display:grid;gap:8px;overflow:hidden}
+.card{background:#fff;border-radius:14px;padding:11px 12px;border:.5px solid #e8e0d2;animation:cardin .45s var(--ease) both}
+.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.18s}
+@keyframes cardin{from{transform:translateY(10px);opacity:.2}to{transform:none;opacity:1}}
+.card .k{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:#8a7f70}
+.card .v{font-weight:700;font-size:.95rem}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{font-size:.66rem;padding:3px 8px;border-radius:999px;background:#3d6b5c;color:#fff;font-weight:600;white-space:nowrap}
+.pill.amber{background:#c09a6b}
+.bar{height:6px;background:#eee6d8;border-radius:6px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:#c09a6b;border-radius:6px;transition:width .6s var(--ease)}
+.stepctl{display:flex;justify-content:center;gap:8px;margin-top:18px;flex-wrap:wrap}
+.stepctl button{font:inherit;font-size:.8rem;font-weight:600;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--ink-2);color:var(--paper);cursor:pointer}
+.stepctl button[aria-pressed="true"]{background:var(--paper);color:var(--ink)}
+
+/* state machine */
+.sm{display:grid;gap:14px}
+.sm-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.node{font:inherit;font-weight:700;font-size:.95rem;padding:14px 18px;border-radius:14px;border:1.5px solid var(--line);background:var(--ink-2);color:var(--paper);cursor:pointer;transition:all .3s var(--ease)}
+.node:hover{border-color:var(--paper)}
+.node.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:translateY(-3px)}
+.arrow{color:var(--muted);font-family:var(--mono)}
+.sm-detail{background:var(--ink-2);border-radius:16px;padding:18px 20px;border:1px solid var(--line);min-height:150px}
+.sm-detail b{font-family:var(--display);font-size:1.3rem;display:block;margin-bottom:6px}
+.sm-detail p{margin:0 0 10px;color:#cfc9d6;font-size:.94rem}
+.ota{display:flex;gap:6px;flex-wrap:wrap}
+.ota span{font-family:var(--mono);font-size:.7rem;padding:5px 9px;border-radius:8px;background:var(--ink-3);color:var(--muted);transition:all .3s}
+.ota span.blocked{background:#5b2a33;color:#ffc4cf}
+
+/* ledger */
+.ledger{display:grid;gap:16px}
+.lbar{display:flex;height:58px;border-radius:14px;overflow:hidden;background:var(--ink-2);border:1px solid var(--line)}
+.lbar div{display:flex;align-items:center;padding:0 14px;font-weight:700;font-size:.85rem;color:var(--ink);transition:flex-basis .7s var(--ease),opacity .5s;flex-basis:0;overflow:hidden;white-space:nowrap}
+.lbar .adv{background:var(--accent)}
+.lbar .bal{background:#c9b8ff}
+.lbar .dep{background:#9fe3c2}
+.lrows{display:grid;gap:8px}
+.lrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--ink-2);border:1px solid var(--line);font-size:.92rem;transition:opacity .4s}
+.lrow i{width:12px;height:12px;border-radius:4px}
+.lrow .amt{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.lrow.dim{opacity:.4}
+.lsum{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.85rem;color:var(--muted);flex-wrap:wrap;gap:8px}
+.lsum b{color:var(--paper)}
+
+/* chat */
+.chat{background:#0b141a;border-radius:22px;padding:16px;display:grid;gap:10px;min-height:400px;align-content:start;border:1px solid #233138;font-size:.92rem}
+.chat .who{display:flex;gap:10px;align-items:center;padding-bottom:10px;border-bottom:1px solid #233138;margin-bottom:4px}
+.chat .who img{width:34px;height:34px;border-radius:50%;background:#1a1a1a}
+.chat .who b{display:block;font-size:.95rem}.chat .who span{font-size:.72rem;color:#8aa0a8}
+.msg{max-width:86%;padding:9px 12px;border-radius:12px;line-height:1.4;animation:cardin .4s var(--ease) both}
+.msg.g{background:#005c4b;justify-self:end;border-top-right-radius:4px}
+.msg.b{background:#202c33;border-top-left-radius:4px}
+.msg.tool{background:transparent;border:1px dashed #3b4a52;font-family:var(--mono);font-size:.72rem;color:#9fb4bc;max-width:100%}
+.msg.tool .dec{display:inline-block;padding:2px 7px;border-radius:6px;font-weight:700;margin-left:4px}
+.dec.allow{background:#1f5f3f;color:#b8f5d0}.dec.deny{background:#6a2430;color:#ffc4cf}.dec.ask{background:#6b5520;color:#ffe6a6}
+.qbtns{display:flex;gap:6px;flex-wrap:wrap}
+.qbtns button{font:inherit;font-size:.78rem;padding:7px 11px;border-radius:999px;border:1px solid #2f4049;background:#111b21;color:#7fd3c0;cursor:pointer}
+.qbtns button:hover{background:#17252c}
+
+.gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:40px}
+.gallery figure{margin:0;border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/5}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.gallery figure:hover img{transform:scale(1.07)}
+.gallery figcaption{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:.62rem;text-transform:uppercase;background:rgba(20,18,23,.75);padding:4px 7px;border-radius:6px}
+@media (max-width:760px){.gallery{grid-template-columns:repeat(3,1fr)}}
+
+/* Solar */
+#solar .wrap{width:min(1016px,100% - 40px)}
+.solar-grid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,420px);justify-content:center;gap:36px;align-items:start}
+@media (max-width:900px){.solar-grid{grid-template-columns:1fr}}
+.viewer{border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#000;position:relative}
+.viewer .imgs{position:relative;aspect-ratio:714/515}
+.viewer .imgs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s var(--ease)}
+.viewer .imgs img.mask{object-fit:contain;background:#000}
+.viewer .lbl{position:absolute;left:12px;top:12px;font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;background:rgba(20,18,23,.8);padding:6px 9px;border-radius:8px;z-index:2}
+.scrub{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.scrub button{font:inherit;font-size:.86rem;font-weight:600;padding:14px 10px;background:var(--ink-2);color:var(--muted);border:0;border-left:1px solid var(--line);cursor:pointer;text-align:left;display:grid;gap:2px;transition:background .3s,color .3s}
+.scrub button:first-child{border-left:0}
+.scrub button small{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em}
+.scrub button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.calc{background:var(--ink-2);border:1px solid var(--line);border-radius:22px;padding:20px;display:grid;gap:12px;font-size:.92rem}
+.calc h3{font-size:1.25rem!important}
+.out b{font-size:1.25rem!important}
+.calc h3{font-size:1.5rem}
+.field{display:grid;gap:6px}
+.field label{display:flex;justify-content:space-between;font-size:.88rem;color:#cfc9d6;gap:10px}
+.field label output{font-family:var(--mono);color:var(--paper);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);height:24px}
+.out{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.out div{background:rgba(4,5,12,.7);border-radius:12px;padding:12px 14px;display:grid}
+.out span{font-size:.75rem;color:var(--muted)}
+.out b{font-family:var(--display);font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.out .big{grid-column:1/-1;background:var(--accent);color:var(--accent-ink)}
+.out .big span{color:inherit;opacity:.75}
+
+.dash{display:grid;grid-template-columns:minmax(0,380px) minmax(0,600px);justify-content:center;gap:44px;align-items:center;margin-top:64px}
+@media (max-width:900px){.dash{grid-template-columns:1fr}}
+.frame{margin:0;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0b0d1e;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px color-mix(in srgb,var(--accent) 18%,transparent);transform:perspective(1200px) rotateY(6deg);transition:transform .6s var(--ease)}
+.frame:hover{transform:none}
+.frame .bar3{display:flex;gap:6px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.frame .bar3 i{width:9px;height:9px;border-radius:50%;background:#3a3f63}.frame .bar3 i:first-child{background:#ff6b6b}.frame .bar3 i:nth-child(2){background:#ffc75a}.frame .bar3 i:nth-child(3){background:#5be38d}
+.frame .bar3 span{margin-left:8px}
+.frame img{width:100%;height:auto}
+.dash-txt{display:grid;gap:16px}
+.dash-txt h3{font-size:clamp(1.6rem,2.6vw,2.2rem);letter-spacing:-.02em}
+.dash-txt p{margin:0;color:#cfd3ef}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trio figure{margin:0;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;transition:transform .35s var(--ease)}
+.trio figure:hover{transform:translateY(-4px)}
+.trio img{width:100%;aspect-ratio:1;object-fit:cover}
+.trio figcaption{font-family:var(--mono);font-size:.64rem;letter-spacing:.04em;text-transform:uppercase;padding:8px 9px;color:#dfe2fb;background:#0b0d1e}
+.bigstat{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;padding:16px 18px;border-radius:14px;background:color-mix(in srgb,var(--accent) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
+.bigstat b{font-family:var(--display);font-size:1.9rem;line-height:1;color:#fff}
+.bigstat span{color:#cfd3ef;font-size:.92rem}
+
+/* work grid */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.grid{grid-template-columns:1fr}}
+.pj{background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;font:inherit;color:inherit;padding:0;transition:transform .45s var(--ease),border-color .3s,opacity .35s;transform-style:preserve-3d;will-change:transform}
+.pj:hover{border-color:rgba(245,242,247,.35)}
+.pj.out{display:none}
+.pj .th{aspect-ratio:16/10;background:var(--ink-3);overflow:hidden;position:relative}
+.pj .th img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .8s var(--ease)}
+.pj:hover .th img{transform:scale(1.05)}
+.pj .th .gen{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:3.2rem;letter-spacing:-.04em;color:var(--ink)}
+.pj .bd{padding:18px 18px 20px;display:grid;gap:8px;flex:1;align-content:start}
+.pj .meta{display:flex;justify-content:space-between;gap:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pj h3{font-size:1.45rem;letter-spacing:-.02em}
+.pj p{margin:0;color:#c9c3d0;font-size:.92rem;line-height:1.5}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tags span{font-family:var(--mono);font-size:.66rem;padding:4px 8px;border-radius:7px;background:var(--ink-3);color:#d8d3de}
+.badge{position:absolute;top:10px;left:10px;font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;padding:5px 8px;border-radius:7px;background:var(--accent);color:var(--accent-ink);z-index:1}
+
+/* modal */
+dialog{border:0;padding:0;background:transparent;max-width:min(920px,calc(100% - 24px));width:100%;color:var(--paper)}
+dialog::backdrop{background:rgba(10,9,12,.72);backdrop-filter:blur(6px)}
+dialog[open] .mbox{animation:pop .45s var(--ease) both}
+@keyframes pop{from{transform:translateY(24px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+.mbox{background:#0b0d1e;border:1px solid var(--line);border-radius:24px;overflow:hidden;max-height:calc(100svh - 40px);overflow-y:auto}
+.mbox .mimg{background:var(--ink-3);max-height:420px;overflow:hidden}
+.mbox .mimg img{width:100%;object-fit:cover;object-position:top;max-height:420px}
+.mbox .mbd{padding:26px clamp(18px,4vw,36px) 32px;display:grid;gap:14px}
+.mbox h3{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em}
+.mbox ul{margin:0;padding-left:18px;color:#d3cdd9;display:grid;gap:6px}
+.mbox .mlinks{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.mbox .mlinks a{background:var(--paper);color:var(--accent-ink);border-color:var(--paper)}
+.close{position:sticky;top:12px;float:right;margin:12px 12px -52px 0;width:40px;height:40px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);font-size:1.2rem;cursor:pointer;z-index:2}
+
+/* journey */
+.tl{position:relative;display:grid;gap:0;margin-left:8px}
+.tl::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .fill{position:absolute;left:0;top:6px;width:2px;background:var(--accent);height:0;transition:height .2s linear,background .5s}
+.ev{position:relative;padding:0 0 34px 34px;display:grid;grid-template-columns:150px 1fr;gap:18px}
+.ev::before{content:"";position:absolute;left:-6px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--ink);border:2px solid var(--accent);box-shadow:0 0 12px color-mix(in srgb,var(--accent) 70%,transparent);transition:border-color .5s}
+.ev .when{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding-top:3px}
+.ev h3{font-size:1.4rem;letter-spacing:-.01em;margin-bottom:4px}
+.ev p{margin:0;color:#c9c3d0;font-size:.94rem}
+@media (max-width:640px){.ev{grid-template-columns:1fr;gap:4px}}
+
+/* skills */
+.starmap{border:1px solid var(--line);border-radius:24px;background:radial-gradient(800px 300px at 50% 0%,color-mix(in srgb,var(--accent) 10%,transparent),transparent 70%),rgba(4,5,12,.55);margin-bottom:18px;overflow:hidden}
+.starmap svg{display:block;width:100%;height:auto}
+.starmap .grp{transition:opacity .35s}
+.starmap.hov .grp{opacity:.25}.starmap.hov .grp.on{opacity:1}
+.starmap line{stroke:color-mix(in srgb,var(--accent) 55%,transparent);stroke-width:1.2;stroke-dasharray:4 5}
+.starmap circle.s{fill:#fff;filter:drop-shadow(0 0 5px var(--accent))}
+.starmap circle.halo{fill:var(--accent);opacity:.18}
+.starmap text{fill:#dfe2fb;font-family:var(--body);font-size:15px}
+.starmap text.gl{fill:var(--accent);font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.starmap .grp:hover circle.halo{opacity:.4}
+@media (min-width:761px){.skills{display:none}}
+@media (max-width:760px){.starmap{display:none}}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){.skills{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.skills{grid-template-columns:1fr}}
+.sk{border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:12px;align-content:start;transition:border-color .3s,background .3s}
+.sk:hover{border-color:var(--accent);background:var(--ink-2)}
+.sk h3{font-size:1.15rem;font-family:var(--body);font-weight:700}
+.sk div{display:flex;flex-wrap:wrap;gap:6px}
+.sk span{font-size:.84rem;padding:5px 10px;border-radius:999px;background:var(--ink-3)}
+
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:56px}
+@media (max-width:820px){.ach{grid-template-columns:1fr}}
+.ach div{background:var(--ink-2);border-radius:18px;padding:22px;border:1px solid var(--line);display:grid;gap:6px}
+.ach b{font-family:var(--display);font-size:2.4rem;line-height:1;letter-spacing:-.03em;color:var(--accent);transition:color .5s}
+.ach span{color:#cfc9d6;font-size:.92rem}
+
+/* contact */
+.contact{background:radial-gradient(700px 420px at 15% 110%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 70%),radial-gradient(600px 400px at 95% 0%,color-mix(in srgb,var(--accent-2) 22%,transparent),transparent 70%);color:var(--paper);overflow:hidden;border-top:1px solid var(--line)}
+.contact h2{background:linear-gradient(180deg,#fff 35%,color-mix(in srgb,var(--accent) 60%,#fff));-webkit-background-clip:text;background-clip:text;color:transparent}
+.contact h2{font-size:clamp(3rem,10vw,8.5rem);letter-spacing:-.045em;font-variation-settings:"wdth" 78;line-height:.88;margin-bottom:34px}
+.contact .grid2{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
+@media (max-width:760px){.contact .grid2{grid-template-columns:1fr}}
+.mail .btn{font-size:1rem}
+.mail{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:var(--display);font-size:clamp(1.3rem,3vw,2.2rem);font-weight:600}
+.links{display:flex;gap:10px;flex-wrap:wrap}
+.links a{text-decoration:none;font-weight:700;padding:12px 18px;border-radius:999px;border:2px solid var(--line);transition:background .25s,color .25s,border-color .25s}
+.links a:hover{background:var(--paper);color:var(--accent-ink);border-color:var(--paper)}
+.copied{font-family:var(--mono);font-size:.78rem}
+footer{padding:26px 0;color:var(--muted);font-size:.82rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div id="progress" aria-hidden="true"></div>
+
+<nav class="top" aria-label="Main">
+  <a href="#top" class="mark" aria-label="Back to top">PG</a>
+  <a href="#qord">Qord</a>
+  <a href="#solar" class="hide-s">SolarIQ</a>
+  <a href="#work">Work</a>
+  <a href="#journey" class="hide-s">Journey</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="stage-h" id="stageH">
+    <p class="outline" id="outline"><span>Hi, I'm an</span><span>AI/ML</span><span>Engineer</span></p>
+    <h1 class="sig">Parshvi Goyal</h1>
+    <span class="planet p1" data-d="18" aria-hidden="true"></span>
+    <span class="planet p2" data-d="-14" aria-hidden="true"></span>
+    <span class="planet p3" data-d="26" aria-hidden="true"></span>
+    <svg class="doodle" viewBox="0 0 150 150" aria-hidden="true"><path d="M8 10 C 40 20, 70 30, 72 58 C 74 84, 42 92, 40 70 C 38 48, 80 44, 100 70 C 112 86, 116 104, 118 128 M 104 116 L 118 130 L 130 112"/></svg>
+    <img class="me" src="img/parshvi2.webp" alt="Portrait of Parshvi Goyal in a black blazer and glasses, smiling" width="900" height="1143">
+    <div class="spin-badge" aria-hidden="true">
+      <svg class="txt" viewBox="0 0 200 200"><defs><path id="circ" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text><textPath href="#circ">BUILDING AI · SHIPPING PRODUCTS · </textPath></text></svg>
+      <div class="core"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="8" fill="var(--accent)"/><ellipse cx="20" cy="20" rx="17" ry="6" fill="none" stroke="var(--paper)" stroke-width="2" transform="rotate(-20 20 20)"/></svg></div>
+    </div>
+    <div class="ribbons" aria-hidden="true">
+      <div class="rib b"><div class="rt"><span>Computer vision</span><span>Segment Anything</span><span>Supabase</span><span>Next.js</span><span>Vitest</span><span>Computer vision</span><span>Segment Anything</span><span>Supabase</span><span>Next.js</span><span>Vitest</span><span>Computer vision</span><span>Segment Anything</span><span>Supabase</span><span>Next.js</span><span>Vitest</span></div></div>
+      <div class="rib a"><div class="rt"><span>Machine learning</span><span>LLM agents</span><span>Full stack</span><span>Founding dev @ Qord</span><span>Press W to warp</span><span>Machine learning</span><span>LLM agents</span><span>Full stack</span><span>Founding dev @ Qord</span><span>Press W to warp</span><span>Machine learning</span><span>LLM agents</span><span>Full stack</span><span>Founding dev @ Qord</span><span>Press W to warp</span></div></div>
+    </div>
+  </div>
+  <div class="wrap hero-sub">
+    <div>
+      <div class="clock" aria-label="Local time"><span class="dot"></span><b id="clk">--:--:-- IST</b></div>
+      <p class="lede"><span class="it">Founding Developer <b>@Qord</b> (B2B SaaS)</span> <span class="sep">|</span> <span class="it">Core Team &amp; Software Engineer <b>@Curling AI Solutions</b></span> <span class="sep">|</span> <span class="it">AI Intern <b>@AICTE IDEA Lab</b></span> <span class="sep">|</span> <span class="it">CSE-AIML <b>@LNCT’27</b></span> <span class="sep">|</span> <span class="it"><b>SIH 2024 &amp; 2025</b></span></p>
+      <div class="chips"><span class="chip live">● Open to AI/ML fresher roles</span><span class="chip">B.Tech CSE (AI/ML) · 2027</span><span class="chip">LNCT Bhopal</span><span class="chip">CGPA 8.64</span></div>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="#qord" id="warpBtn">Launch into my work <span class="arr">→</span></a>
+      <a class="btn ghost" href="#contact">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b data-count="150" data-suffix="+">150+</b><span>commits shipped to Qord</span></div>
+    <div class="stat"><b data-count="517">517</b><span>test cases written</span></div>
+    <div class="stat"><b data-count="37">37</b><span>regression tests pinning prod bugs</span></div>
+    <div class="stat"><b data-count="11">11</b><span>public GitHub repos</span></div>
+    <div class="stat"><b>Top 3%</b><span>of 200+ students, six semesters</span></div>
+    <div class="stat"><b data-count="223" data-prefix="#">#223</b><span>of 7,000+ in GFG institution rank</span></div>
+  </div>
+</div>
+
+<div class="marquee" aria-label="Tools I use">
+  <div class="track">
+    <span>Python</span><span>TypeScript</span><span>Next.js</span><span>PyTorch</span><span>OpenCV</span><span>Segment Anything</span><span>Supabase</span><span>PostgreSQL</span><span>LLMs &amp; tool calling</span><span>n8n</span><span>Streamlit</span><span>Vitest</span><span>React</span><span>Tailwind CSS</span>
+    <span aria-hidden="true">Python</span><span aria-hidden="true">TypeScript</span><span aria-hidden="true">Next.js</span><span aria-hidden="true">PyTorch</span><span aria-hidden="true">OpenCV</span><span aria-hidden="true">Segment Anything</span><span aria-hidden="true">Supabase</span><span aria-hidden="true">PostgreSQL</span><span aria-hidden="true">LLMs &amp; tool calling</span><span aria-hidden="true">n8n</span><span aria-hidden="true">Streamlit</span><span aria-hidden="true">Vitest</span><span aria-hidden="true">React</span><span aria-hidden="true">Tailwind CSS</span>
+  </div>
+</div>
+
+<!-- QORD -->
+<section class="case" id="qord">
+  <div class="wrap">
+    <div class="case-top">
+      <div class="rv">
+        <div class="eyebrow">Case study 01 · Jun 2026 – now</div>
+        <div class="brand" style="margin-top:22px">
+          <img src="img/qord-logo.png" alt="Qord logo">
+          <div class="t"><b>Qord</b><span>Curling AI Solutions · qord.in</span></div>
+        </div>
+        <h2>One app for a homestay's bookings, money and guests.</h2>
+        <p>Qord is a Property Management System (PMS) built as a Progressive Web App (PWA) for Indian homestay and short-term rental hosts. It syncs calendars with Airbnb, Booking.com and MakeMyTrip, tracks every rupee of a stay, and gives guests a no-login portal and a WhatsApp concierge.</p>
+        <p>I joined as a founding developer and core team member. The parts below are the ones I built and own.</p>
+      </div>
+      <div class="rv">
+        <div class="facts">
+          <div class="fact"><b>150+</b><span>commits shipped</span></div>
+          <div class="fact"><b>10</b><span>merged pull requests</span></div>
+          <div class="fact"><b>517</b><span>test cases in 107 Vitest files</span></div>
+          <div class="fact"><b>37</b><span>regression tests pinning production bugs</span></div>
+        </div>
+        <div class="role"><span class="mono">Stack</span>Next.js · TypeScript · Supabase (PostgreSQL, Auth, Realtime) · WhatsApp Cloud API · LLMs with tool calling · Easebuzz · Channex · Vitest · Vercel</div>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Qord features I built">
+      <button class="tab" role="tab" id="t-portal" aria-controls="p-portal" aria-selected="true">Guest portal</button>
+      <button class="tab" role="tab" id="t-model" aria-controls="p-model" aria-selected="false">Booking model</button>
+      <button class="tab" role="tab" id="t-money" aria-controls="p-money" aria-selected="false">Money journey</button>
+      <button class="tab" role="tab" id="t-bot" aria-controls="p-bot" aria-selected="false">WhatsApp concierge</button>
+    </div>
+
+    <!-- portal -->
+    <div class="stage" role="tabpanel" id="p-portal" aria-labelledby="t-portal">
+      <div class="txt">
+        <h3>A guest portal that knows where you are in your stay.</h3>
+        <p>Guests open one link: no app, no login. The home screen changes with the stage of the stay, so it always shows the next thing the guest needs.</p>
+        <ul>
+          <li>Payment card pinned to the top until the stay and deposit are settled</li>
+          <li>Arrival day brings directions, door code and Wi-Fi to the front</li>
+          <li>ID upload accepts any photo format or PDF</li>
+          <li>Access to codes unlocks by check-in time and payment status</li>
+        </ul>
+        <div class="stepctl" role="group" aria-label="Stay stage">
+          <button data-st="0" aria-pressed="true">Booked</button>
+          <button data-st="1" aria-pressed="false">Arrival day</button>
+          <button data-st="2" aria-pressed="false">In stay</button>
+          <button data-st="3" aria-pressed="false">Checkout</button>
+        </div>
+        <p class="note">Interactive sketch of the flow I built. Sample guest and property.</p>
+      </div>
+      <div class="phone" aria-live="polite">
+        <div class="screen">
+          <div class="hdr" id="phHdr" style="background-image:url(img/stay-villa-courtyard.jpg)"><div class="ttl"><b>Courtyard Villa</b><span>Hi Ananya · 2 guests · 3 nights</span></div></div>
+          <div class="steps"><i class="on"></i><i></i><i></i><i></i></div>
+          <div class="stagelbl" id="phLbl">Stage · Booked</div>
+          <div class="cards" id="phCards"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- model -->
+    <div class="stage" role="tabpanel" id="p-model" aria-labelledby="t-model" hidden>
+      <div class="txt">
+        <h3>Inquiries, holds and confirmed stays, without double bookings.</h3>
+        <p>Every booking moves through one model. Only the states that should block a date do, and confirmed stays push that block to every OTA calendar.</p>
+        <ul>
+          <li>Inquiries never block availability</li>
+          <li>A hold reserves dates for a guest who is about to pay</li>
+          <li>The first real payment confirms the stay</li>
+          <li>Early checkout frees the unused nights and syncs them through Channex</li>
+        </ul>
+        <p class="note">Click a state to see what it does.</p>
+      </div>
+      <div class="sm">
+        <div class="sm-row">
+          <button class="node on" data-n="0">Inquiry</button><span class="arrow">→</span>
+          <button class="node" data-n="1">Hold</button><span class="arrow">→</span>
+          <button class="node" data-n="2">Confirmed</button><span class="arrow">→</span>
+          <button class="node" data-n="3">Checked out</button>
+        </div>
+        <div class="sm-detail" id="smDetail" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- money -->
+    <div class="stage" role="tabpanel" id="p-money" aria-labelledby="t-money" hidden>
+      <div class="txt">
+        <h3>Every rupee of a stay on one ledger.</h3>
+        <p>The dashboard, payment links and guest portal all read the same numbers, so "Collected" and "Balance due" always agree.</p>
+        <ul>
+          <li>The first payment of any size settles the advance and confirms the booking</li>
+          <li>The balance can never exceed the stay total</li>
+          <li>The security deposit is kept separate: refundable, not payment for the stay</li>
+          <li>Easebuzz links, UPI and cash entries, with versioned GST proforma PDFs</li>
+        </ul>
+        <div class="stepctl" role="group" aria-label="Payments received">
+          <button data-m="0" aria-pressed="true">Quote sent</button>
+          <button data-m="1" aria-pressed="false">Advance paid</button>
+          <button data-m="2" aria-pressed="false">Balance paid</button>
+          <button data-m="3" aria-pressed="false">Deposit held</button>
+        </div>
+        <p class="note">Sample amounts in ₹.</p>
+      </div>
+      <div class="ledger" aria-live="polite">
+        <div class="lbar"><div class="adv">Advance</div><div class="bal">Balance</div><div class="dep">Deposit</div></div>
+        <div class="lrows">
+          <div class="lrow" id="lr0"><i style="background:var(--accent)"></i><span>Advance · Easebuzz link</span><span class="amt">₹6,000</span></div>
+          <div class="lrow" id="lr1"><i style="background:#c9b8ff"></i><span>Balance · UPI</span><span class="amt">₹12,880</span></div>
+          <div class="lrow" id="lr2"><i style="background:#9fe3c2"></i><span>Security deposit · refundable</span><span class="amt">₹3,000</span></div>
+        </div>
+        <div class="lsum"><span>Stay total <b>₹18,880</b> (₹16,000 + 18% GST)</span><span>Collected <b id="lCol">₹0</b></span><span>Due <b id="lDue">₹18,880</b></span></div>
+      </div>
+    </div>
+
+    <!-- concierge -->
+    <div class="stage" role="tabpanel" id="p-bot" aria-labelledby="t-bot" hidden>
+      <div class="txt">
+        <h3>An LLM concierge that is not allowed to guess.</h3>
+        <p>Guests ask questions on WhatsApp. The LLM picks a tool, and deterministic rules decide the answer: Allow, Deny or Needs confirmation from the host. Prices, availability and policies come from the database, never from the model.</p>
+        <ul>
+          <li>Deterministic guardrails for availability, pricing, early check-in and late checkout</li>
+          <li>Idempotent actions, so a repeated message never double-books</li>
+          <li>Buttons that predict the next step instead of free-text prompts</li>
+          <li>Full guest lifecycle: confirmation, reminders, instant check-in, ID upload</li>
+        </ul>
+        <p class="note">Tap a question to replay a sample conversation.</p>
+      </div>
+      <div class="chat" id="chat" aria-live="polite">
+        <div class="who"><img src="img/qord-icon.png" alt=""><div><b>Courtyard Villa</b><span>Qord concierge · online</span></div></div>
+        <div class="qbtns" id="qbtns">
+          <button data-q="0">Can I check in early?</button>
+          <button data-q="1">Is it free next weekend?</button>
+          <button data-q="2">Can I bring my dog?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery rv" aria-label="Properties managed with Qord">
+      <figure><img src="img/stay-villa-courtyard.jpg" alt="Villa courtyard"><figcaption>Villa</figcaption></figure>
+      <figure><img src="img/stay-goa-terrace.jpg" alt="Goa terrace"><figcaption>Goa</figcaption></figure>
+      <figure><img src="img/stay-rishikesh-cottage.jpg" alt="Rishikesh cottage"><figcaption>Rishikesh</figcaption></figure>
+      <figure><img src="img/stay-pondicherry-courtyard.jpg" alt="Pondicherry courtyard"><figcaption>Pondicherry</figcaption></figure>
+      <figure><img src="img/stay-hyderabad-loft.jpg" alt="Hyderabad loft"><figcaption>Hyderabad</figcaption></figure>
+      <figure><img src="img/stay-hill-bedroom.jpg" alt="Hill bedroom"><figcaption>Hills</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- SOLAR -->
+<section id="solar">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Case study 02 · AICTE IDEA Lab · Mar – May 2026</div>
+      <h2>SolarIQ reads a rooftop and prices the panels.</h2>
+      <p>Give it an aerial image and a location. It finds the roof, removes trees, shadows and structures, pulls irradiance from PVGIS, and returns energy output, cost, savings and payback. The first version used an OpenCV contour pipeline; SolarIQ Pro replaced it with zero-shot segmentation from Meta's Segment Anything (SAM).</p>
+    </div>
+    <div class="solar-grid">
+      <div class="rv">
+        <div class="viewer">
+          <div class="imgs">
+            <img src="img/solar-cv-in.jpg" alt="Aerial image of the CV Raman building rooftop at LNCT" data-s="0">
+            <img class="mask" src="img/solariq-mask0.jpg" alt="SAM rooftop mask" data-s="1" style="opacity:0">
+            <img class="mask" src="img/solariq-mask1.jpg" alt="Obstacle detection mask" data-s="2" style="opacity:0">
+            <img class="mask" src="img/solariq-mask2.jpg" alt="Final usable area mask" data-s="3" style="opacity:0">
+            <span class="lbl" id="sLbl">Input · CV Raman building, LNCT</span>
+          </div>
+          <div class="scrub" role="group" aria-label="Pipeline stage">
+            <button data-s="0" aria-pressed="true"><small>01</small>Input</button>
+            <button data-s="1" aria-pressed="false"><small>02</small>SAM mask</button>
+            <button data-s="2" aria-pressed="false"><small>03</small>Obstacles</button>
+            <button data-s="3" aria-pressed="false"><small>04</small>Usable area</button>
+          </div>
+        </div>
+        <p class="note">Real output from SolarIQ Pro on the CV Raman building: Segment Anything finds the roof, OpenCV marks the obstacles, and what is left is 275.19 m² of usable rooftop.</p>
+      </div>
+      <div class="calc rv">
+        <h3>Try the payback maths</h3>
+        <div class="field"><label for="cArea">Usable roof area <output id="oArea">275 m²</output></label><input id="cArea" type="range" min="20" max="1000" step="1" value="275"></div>
+        <div class="field"><label for="cYield">Yearly yield per kWp (from PVGIS) <output id="oYield">1,500 kWh</output></label><input id="cYield" type="range" min="1000" max="1900" step="10" value="1500"></div>
+        <div class="field"><label for="cTariff">Electricity tariff <output id="oTariff">₹8.0 / kWh</output></label><input id="cTariff" type="range" min="4" max="14" step="0.5" value="8"></div>
+        <div class="field"><label for="cCost">System cost <output id="oCost">₹50 / W</output></label><input id="cCost" type="range" min="30" max="80" step="1" value="50"></div>
+        <div class="out" aria-live="polite">
+          <div><span>System size</span><b id="rKwp">26 kWp</b></div>
+          <div><span>Energy per year</span><b id="rKwh">39,000 kWh</b></div>
+          <div><span>Installation cost</span><b id="rCost">₹13.0 L</b></div>
+          <div><span>Savings per year</span><b id="rSave">₹3.12 L</b></div>
+          <div class="big"><span>Payback period</span><b id="rPay">4.2 years</b></div>
+        </div>
+        <p class="note" style="margin:0">Same formulas as the app: 10 m² per kWp. Defaults are example values; move the sliders.</p>
+      </div>
+    </div>
+    <div class="dash rv">
+      <figure class="frame">
+        <div class="bar3"><i></i><i></i><i></i><span>localhost · SolarIQ Pro</span></div>
+        <img src="img/solariq-app.jpg" alt="SolarIQ Pro Streamlit dashboard with rooftop image, three analysis masks and a 275.19 m² estimate" width="727" height="994">
+      </figure>
+      <div class="dash-txt">
+        <div class="eyebrow">The real dashboard</div>
+        <h3>SolarIQ Pro, running.</h3>
+        <p>A Streamlit app: enter latitude, longitude, electricity cost and system cost in the sidebar, upload a rooftop image, and get the analysis below it.</p>
+        <div class="trio">
+          <figure><img src="img/solariq-mask0.jpg" alt="SAM rooftop mask"><figcaption>SAM rooftop mask</figcaption></figure>
+          <figure><img src="img/solariq-mask1.jpg" alt="Obstacle detection"><figcaption>Obstacle detection</figcaption></figure>
+          <figure><img src="img/solariq-mask2.jpg" alt="Final usable area"><figcaption>Final usable area</figcaption></figure>
+        </div>
+        <div class="bigstat"><b>275.19 m²</b><span>usable rooftop on the CV Raman building</span></div>
+      </div>
+    </div>
+</div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Everything I've built</div>
+      <h2>Work, from first repo to production.</h2>
+      <p>Every project, from my first web build to production. Open any card for details and links.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="tab" aria-pressed="true" aria-selected="true" data-f="all">All</button>
+      <button class="tab" aria-pressed="false" aria-selected="false" data-f="ai">AI / ML</button>
+      <button class="tab" aria-pressed="false" aria-selected="false" data-f="product">Product</button>
+      <button class="tab" aria-pressed="false" aria-selected="false" data-f="web">Web</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<dialog id="modal" aria-labelledby="mTitle">
+  <div class="mbox">
+    <button class="close" id="mClose" aria-label="Close">✕</button>
+    <div class="mimg" id="mImg"></div>
+    <div class="mbd">
+      <div class="meta mono" id="mMeta" style="color:var(--muted)"></div>
+      <h3 id="mTitle"></h3>
+      <p id="mDesc" style="margin:0;color:#d3cdd9"></p>
+      <ul id="mList"></ul>
+      <div class="tags" id="mTags"></div>
+      <div class="mlinks" id="mLinks"></div>
+    </div>
+  </div>
+</dialog>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Journey</div>
+      <h2>From a Myntra clone to a production SaaS.</h2>
+    </div>
+    <div class="tl" id="tl"><div class="fill" id="tlFill"></div>
+      <div class="ev"><div class="when">Jun 2026 – now</div><div><h3>Founding Developer &amp; Core Team · Curling AI Solutions</h3><p>Core team member and software engineer building the company's B2B SaaS products.</p></div></div>
+      <div class="ev"><div class="when">Sep – Nov 2026</div><div><h3>Qord</h3><p>Shipped the guest portal, booking model, money journey and WhatsApp automation for a live PMS. 150+ commits, 517 tests.</p></div></div>
+      <div class="ev"><div class="when">Sep 2026</div><div><h3>Concierge Engine Prototype</h3><p>An LLM guest concierge for WhatsApp that understands goals, retrieves evidence from property knowledge and verifies every answer.</p></div></div>
+      <div class="ev"><div class="when">Mar – May 2026</div><div><h3>AI Intern · AICTE IDEA Lab, Bhopal</h3><p>Built SolarIQ: rooftop segmentation with SAM and OpenCV, PVGIS energy estimates and ROI in a Streamlit dashboard.</p></div></div>
+      <div class="ev"><div class="when">2025</div><div><h3>Tech Contributor · GSSoC 2025</h3><p>Selected for GirlScript Summer of Code to contribute to open-source projects.</p></div></div>
+      <div class="ev"><div class="when">2025</div><div><h3>First repository</h3><p>Started building on GitHub with HTML, CSS and JavaScript, leading to a Myntra-inspired e-commerce frontend and a 3D landing page.</p></div></div>
+      <div class="ev"><div class="when">2024 · 2025</div><div><h3>Smart India Hackathon</h3><p>Took part in SIH 2024 and SIH 2025.</p></div></div>
+      <div class="ev"><div class="when">Sep 2023 – Jun 2027</div><div><h3>B.Tech CSE (AI/ML) · LNCT Bhopal</h3><p>CGPA 8.64. Top 3% of 200+ students for six consecutive semesters.</p></div></div>
+      <div class="ev" style="padding-bottom:0"><div class="when">2020 – 2023</div><div><h3>St. Joseph's Convent, Sagar</h3><p>Class X (2020–21, CGPA 9.46) and Class XII PCM + IT (2022–23, CGPA 7.24).</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="background:var(--ink-2)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">Toolkit</div>
+      <h2>What I work with.</h2>
+    </div>
+    <div class="starmap" id="starmap" role="img" aria-label="Skills drawn as six constellations: languages, AI and ML, GenAI and automation, web, data, tools and testing"></div>
+    <div class="skills">
+      <div class="sk rv"><h3>Languages</h3><div><span>Python</span><span>TypeScript</span><span>JavaScript</span><span>Java</span><span>SQL</span></div></div>
+      <div class="sk rv"><h3>AI / ML</h3><div><span>PyTorch</span><span>OpenCV</span><span>Segment Anything</span><span>NumPy</span><span>Pandas</span><span>Matplotlib</span></div></div>
+      <div class="sk rv"><h3>GenAI &amp; automation</h3><div><span>LLMs</span><span>Tool calling</span><span>AI agents</span><span>RAG</span><span>n8n</span><span>Streamlit</span></div></div>
+      <div class="sk rv"><h3>Web</h3><div><span>React</span><span>Next.js</span><span>Tailwind CSS</span><span>HTML</span><span>CSS</span><span>REST APIs</span></div></div>
+      <div class="sk rv"><h3>Data</h3><div><span>PostgreSQL</span><span>Supabase</span><span>MySQL</span></div></div>
+      <div class="sk rv"><h3>Tools &amp; testing</h3><div><span>Git</span><span>GitHub</span><span>Vercel</span><span>Vitest</span><span>Playwright</span></div></div>
+    </div>
+    <div class="ach">
+      <div class="rv"><b>Top 3%</b><span>academically among 200+ students for six consecutive semesters</span></div>
+      <div class="rv"><b>#223</b><span>of 7,000+ participants in GFG institution rank</span></div>
+      <div class="rv"><b>GSSoC '25</b><span>selected as a Tech Contributor in GirlScript Summer of Code</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Let's build something.</h2>
+    <div class="grid2">
+      <div style="display:grid;gap:14px">
+        <div class="mail"><span>goyalparshvi@gmail.com</span><button class="btn solid" id="copyMail" type="button">Copy email</button><span class="copied" id="copied" aria-live="polite"></span></div>
+        <p style="margin:0;max-width:52ch;font-weight:500">Looking for fresher roles in AI/ML and full-stack development. I reply fastest on email and LinkedIn.</p>
+      </div>
+      <div class="links">
+        <a href="https://www.linkedin.com/in/parshvi-goyal-a57582325" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/parshvigoyal" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://codolio.com/profile/Parshvi_Goyal0227" target="_blank" rel="noopener">LeetCode ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer><div class="wrap"><span>© 2026 Parshvi Goyal · Bhopal, India</span><span>Built by hand, among the stars.</span></div></footer>
+
+<script>
+document.documentElement.classList.add('js');
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+
+/* starfield: twinkle, depth parallax, pointer constellation, shooting stars and a warp jump */
+(function(){const c=document.getElementById('stars'),x=c.getContext('2d');let W,H,D,stars=[],shoot=null,mx=0,my=0,px0=-1e4,py0=-1e4,warpAt=-1e4;
+ function size(){D=Math.min(devicePixelRatio||1,2);W=c.width=innerWidth*D;H=c.height=innerHeight*D;const n=Math.round(innerWidth*innerHeight/2400);stars=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,z:Math.random()*.9+.1,r:Math.random()*1.3+.2,t:Math.random()*6.28}))}
+ size();addEventListener('resize',size);
+ addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;px0=e.clientX*D;py0=e.clientY*D},{passive:true});
+ document.addEventListener('mouseleave',()=>{px0=py0=-1e4});
+ const accent=()=>getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#b49bff';
+ window.warp=function(){warpAt=performance.now();if(reduce)return;document.documentElement.classList.add('warping');setTimeout(()=>document.documentElement.classList.remove('warping'),1100)};
+ function frame(now){x.clearRect(0,0,W,H);const sy=scrollY*D,wk=Math.max(0,1-(now-warpAt)/1100),wv=wk>0?Math.sin(wk*Math.PI):0,cx=W/2,cy=H/2,R=150*D,near=[];
+  const ac=accent();
+  for(const s of stars){let sx=((s.x-mx*40*D*s.z)%W+W)%W,syy=((s.y-sy*.18*s.z-my*30*D*s.z)%H+H)%H;
+   if(wv>0){const dx=sx-cx,dy=syy-cy,k=wv*.55*s.z;x.globalAlpha=.9;x.strokeStyle=s.z>.6?'#fff':ac;x.lineWidth=(s.r*s.z+.4)*D;x.beginPath();x.moveTo(sx,syy);x.lineTo(sx+dx*k,syy+dy*k);x.stroke();continue}
+   const a=reduce?.8:.45+.55*Math.sin(now/900*s.z+s.t);x.globalAlpha=Math.max(.08,a);x.fillStyle=s.z>.8?'#dfe4ff':'#a9b2e8';x.beginPath();x.arc(sx,syy,s.r*D*s.z+.3,0,6.28);x.fill();
+   const dd=Math.hypot(sx-px0,syy-py0);if(dd<R&&s.z>.35)near.push([sx,syy,dd])}
+  if(near.length){x.strokeStyle=ac;x.lineWidth=D*.8;near.sort((p,q)=>p[2]-q[2]).slice(0,7).forEach((p,i,arr)=>{x.globalAlpha=(1-p[2]/R)*.55;x.beginPath();x.moveTo(p[0],p[1]);x.lineTo(px0,py0);x.stroke();if(i){const q=arr[i-1];x.globalAlpha*=.6;x.beginPath();x.moveTo(p[0],p[1]);x.lineTo(q[0],q[1]);x.stroke()}})}
+  if(!reduce&&wv===0){if(!shoot&&Math.random()<.004)shoot={x:Math.random()*W*.8,y:Math.random()*H*.4,l:0};if(shoot){shoot.l+=14*D;const g=x.createLinearGradient(shoot.x+shoot.l,shoot.y+shoot.l*.45,shoot.x+shoot.l-120*D,shoot.y+(shoot.l-120*D)*.45);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');x.globalAlpha=1;x.strokeStyle=g;x.lineWidth=1.5*D;x.beginPath();x.moveTo(shoot.x+shoot.l,shoot.y+shoot.l*.45);x.lineTo(shoot.x+shoot.l-120*D,shoot.y+(shoot.l-120*D)*.45);x.stroke();if(shoot.l>W*.5)shoot=null}}
+  x.globalAlpha=1;if(!reduce)requestAnimationFrame(frame)}
+ requestAnimationFrame(frame);if(reduce)addEventListener('scroll',()=>requestAnimationFrame(frame),{passive:true});
+})();
+
+/* warp triggers: the launch button and the W key */
+$('#warpBtn').addEventListener('click',e=>{if(reduce)return;e.preventDefault();warp();setTimeout(()=>$('#qord').scrollIntoView({behavior:'smooth'}),520)});
+addEventListener('keydown',e=>{if((e.key==='w'||e.key==='W')&&!e.metaKey&&!e.ctrlKey&&!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)&&!$('#modal').open)warp()});
+
+/* skills star map */
+(function(){const G=[['Languages',['Python','TypeScript','JavaScript','Java','SQL'],[90,70]],['AI / ML',['PyTorch','OpenCV','Segment Anything','NumPy','Pandas','Matplotlib'],[440,50]],['GenAI & automation',['LLMs','Tool calling','AI agents','RAG','n8n','Streamlit'],[820,80]],['Web',['React','Next.js','Tailwind CSS','HTML','CSS','REST APIs'],[90,300]],['Data',['PostgreSQL','Supabase','MySQL'],[470,320]],['Tools & testing',['Git','GitHub','Vercel','Vitest','Playwright'],[820,300]]];
+ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+ const esc=t=>t.replace(/&/g,'&amp;');
+ let svg='<svg viewBox="0 0 1200 540" xmlns="http://www.w3.org/2000/svg">';
+ G.forEach(([name,items,[ox,oy]],gi)=>{const pts=items.map((_,i)=>[ox+40+(i%3)*105+rnd()*28,oy+54+Math.floor(i/3)*78+rnd()*26+(i%2)*14]);
+  svg+=`<g class="grp" data-g="${gi}"><text class="gl" x="${ox+30}" y="${oy+22}">${esc(name)}</text>`;
+  pts.forEach((p,i)=>{if(i)svg+=`<line x1="${pts[i-1][0]}" y1="${pts[i-1][1]}" x2="${p[0]}" y2="${p[1]}"/>`});
+  pts.forEach((p,i)=>{const r=2.4+rnd()*2;svg+=`<circle class="halo" cx="${p[0]}" cy="${p[1]}" r="${r*4}"/><circle class="s" cx="${p[0]}" cy="${p[1]}" r="${r}"/><text x="${p[0]+10}" y="${p[1]+20}">${esc(items[i])}</text>`});
+  svg+='</g>'});
+ svg+='</svg>';const m=$('#starmap');m.innerHTML=svg;
+ $$('.grp',m).forEach(g=>{g.addEventListener('mouseenter',()=>{m.classList.add('hov');g.classList.add('on')});g.addEventListener('mouseleave',()=>{m.classList.remove('hov');g.classList.remove('on')})});
+})();
+
+/* mission clock */
+(function(){const el=$('#clk');const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});const t=()=>el.textContent=f.format(new Date())+' IST';t();setInterval(t,1000)})();
+
+/* hero parallax: planets and outline text drift with the pointer */
+(function(){if(reduce||!matchMedia('(hover:hover)').matches)return;const ps=$$('.planet'),o=$('#outline');addEventListener('mousemove',e=>{if(scrollY>innerHeight)return;const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;ps.forEach(p=>{const d=+p.dataset.d;p.style.transform=`translate(${x*d}px,${y*d}px)`});o.style.transform=`translate(${x*-14}px,${y*-8}px)`},{passive:true})})();
+
+/* progress + nav highlight + timeline fill */
+const prog=$('#progress'), secs=['qord','solar','work','journey','contact'].map(id=>document.getElementById(id));
+function onScroll(){
+  const h=document.documentElement; prog.style.transform=`scaleX(${h.scrollTop/(h.scrollHeight-h.clientHeight)})`;
+  let cur=null; secs.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+  $$('nav.top a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+  const tl=$('#tl'),r=tl.getBoundingClientRect(),p=Math.min(1,Math.max(0,(innerHeight*.6-r.top)/r.height));$('#tlFill').style.height=(p*(r.height-12))+'px';
+}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* reveal */
+if(!reduce&&'IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+  $$('.rv').forEach(el=>{if(el.getBoundingClientRect().top>innerHeight){el.classList.add('pre');io.observe(el)}});
+}
+
+/* count up */
+function countUp(el){const t=+el.dataset.count,pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';if(reduce)return;const t0=performance.now();const step=n=>{const k=Math.min(1,(n-t0)/1300),v=Math.round(t*(1-Math.pow(1-k,3)));el.textContent=pre+v.toLocaleString('en-IN')+suf;if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)}
+const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){countUp(e.target);sio.unobserve(e.target)}}));
+$$('[data-count]').forEach(el=>sio.observe(el));
+
+
+/* tabs */
+const tabs=$$('[role=tab]');
+tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>{x.setAttribute('aria-selected',x===t);document.getElementById(x.getAttribute('aria-controls')).hidden=x!==t})}));
+$('[role=tablist]').addEventListener('keydown',e=>{const i=tabs.indexOf(document.activeElement);if(i<0)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();n.click()}});
+
+/* portal phone */
+const stages=[
+ {lbl:'Booked',img:'stay-villa-courtyard',cards:[
+  ['Payment','<div class="row"><span class="v">₹12,880 balance due</span><span class="pill amber">Pay now</span></div><div class="bar"><i style="width:32%"></i></div>'],
+  ['Your stay','<div class="v">Fri 12 Dec → Mon 15 Dec</div>Check-in 2:00 PM · Check-out 11:00 AM'],
+  ['Before you arrive','<div class="row"><span class="v">Upload ID</span><span class="pill">Any photo or PDF</span></div>'],
+  ['Countdown','<div class="v">9 days to go</div>']]},
+ {lbl:'Arrival day',img:'stay-goa-terrace',cards:[
+  ['Directions','<div class="row"><span class="v">22 min away</span><span class="pill">Open map</span></div>'],
+  ['Check in','<div class="row"><span class="v">From 2:00 PM</span><span class="pill amber">Check in now</span></div>'],
+  ['Door code','<div class="v">Unlocks at check-in</div>'],
+  ['Host contact','<div class="v">Caretaker · Ramesh</div>']]},
+ {lbl:'In stay',img:'stay-hill-bedroom',cards:[
+  ['Wi-Fi','<div class="row"><span class="v">Courtyard_Guest</span><span class="pill">Copy password</span></div>'],
+  ['Door code','<div class="v">4 · 7 · 1 · 9</div>'],
+  ['Need help?','<div class="row"><span class="v">Housekeeping, extra bed</span><span class="pill amber">Ask</span></div>'],
+  ['Payment','<div class="row"><span class="v">All settled</span><span class="pill">Paid</span></div><div class="bar"><i style="width:100%"></i></div>']]},
+ {lbl:'Checkout',img:'stay-rishikesh-cottage',cards:[
+  ['Checkout','<div class="v">By 11:00 AM today</div>'],
+  ['Security deposit','<div class="row"><span class="v">₹3,000 refundable</span><span class="pill">Refund on checkout</span></div>'],
+  ['Thank you','<div class="row"><span class="v">How was your stay?</span><span class="pill amber">Leave a review</span></div>']]}
+];
+function phone(i){const s=stages[i];$('#phHdr').style.backgroundImage=`url(img/${s.img}.jpg)`;$('#phLbl').textContent='Stage · '+s.lbl;$$('.steps i').forEach((d,k)=>d.classList.toggle('on',k<=i));$('#phCards').innerHTML=s.cards.map(c=>`<div class="card"><div class="k">${c[0]}</div>${c[1]}</div>`).join('');$$('[data-st]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.st===i))}
+let ph=0,phTimer=null;phone(0);
+$$('[data-st]').forEach(b=>b.addEventListener('click',()=>{clearInterval(phTimer);ph=+b.dataset.st;phone(ph)}));
+if(!reduce)phTimer=setInterval(()=>{if(!$('#p-portal').hidden&&$('#p-portal').getBoundingClientRect().top<innerHeight){ph=(ph+1)%4;phone(ph)}},3200);
+
+/* state machine */
+const sm=[
+ {t:'Inquiry',d:'A guest asks about dates. The host sees it on the Leads calendar with a reminder alert.',b:[]},
+ {t:'Hold',d:'Dates are reserved for a guest who is about to pay. A payment link goes out; no payment is recorded while dates are only on hold.',b:['Qord']},
+ {t:'Confirmed',d:'The first real payment confirms the stay. The dates are blocked on every connected channel.',b:['Qord','Airbnb','Booking.com','MakeMyTrip']},
+ {t:'Checked out',d:'Leaving early frees the unused nights, and the server pushes them back to the channels through Channex.',b:[]}
+];
+function smShow(i){$$('.node').forEach((n,k)=>n.classList.toggle('on',k===i));const s=sm[i];$('#smDetail').innerHTML=`<b>${s.t}</b><p>${s.d}</p><div class="ota">${['Qord','Airbnb','Booking.com','MakeMyTrip'].map(o=>`<span class="${s.b.includes(o)?'blocked':''}">${o}${s.b.includes(o)?' · blocked':' · open'}</span>`).join('')}</div>`}
+$$('.node').forEach(n=>n.addEventListener('click',()=>smShow(+n.dataset.n)));smShow(0);
+
+/* money */
+const M=[[0,0,0],[6000,0,0],[6000,12880,0],[6000,12880,3000]];
+function money(i){const [a,b,d]=M[i],tot=18880+3000;const bar=$$('.lbar div');[a,b,d].forEach((v,k)=>{bar[k].style.flexBasis=(v/tot*100)+'%';$('#lr'+k).classList.toggle('dim',!v)});const col=a+b;$('#lCol').textContent='₹'+col.toLocaleString('en-IN');$('#lDue').textContent='₹'+(18880-col).toLocaleString('en-IN');$$('[data-m]').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.m===i))}
+$$('[data-m]').forEach(b=>b.addEventListener('click',()=>money(+b.dataset.m)));money(0);
+
+/* chat */
+const convo=[
+ [['g','Hi! Can we check in early, around 11 AM?'],['tool','tool: check_early_checkin(date=12 Dec, time=11:00) → previous guest checks out 11:00 same day <span class="dec ask">NEEDS CONFIRMATION</span>'],['b','The room is being turned over that morning. I have asked the host to confirm 11 AM and will message you here as soon as they reply.']],
+ [['g','Is the villa free next weekend?'],['tool','tool: check_availability(19–21 Dec) → no overlapping bookings or holds <span class="dec allow">ALLOW</span>'],['b','Yes, Fri 19 to Sun 21 Dec is open. 2 nights is ₹10,620 including GST. Want me to hold the dates while you pay?']],
+ [['g','Can I bring my dog along?'],['tool','tool: get_policy("pets") → house rules: pets not allowed <span class="dec deny">DENY</span>'],['b','Sorry, this property does not allow pets. Here are the other house rules, in case they help.']]
+];
+let chatRun=0;
+$$('[data-q]').forEach(b=>b.addEventListener('click',()=>{const run=++chatRun;$$('.msg',$('#chat')).forEach(m=>m.remove());convo[+b.dataset.q].forEach((m,k)=>setTimeout(()=>{if(run!==chatRun)return;const d=document.createElement('div');d.className='msg '+m[0];d.innerHTML=m[1];$('#chat').insertBefore(d,$('#qbtns'))},reduce?0:k*900))}));
+$('[data-q="0"]').click();
+
+/* solar scrub */
+const sl=['Input · CV Raman building, LNCT','SAM rooftop mask','Obstacle detection','Final usable area · 275.19 m²'];
+$$('.scrub button').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.s;$$('.viewer .imgs img').forEach(im=>im.style.opacity=+im.dataset.s===i||+im.dataset.s===0?1:0);$('#sLbl').textContent=sl[i];$$('.scrub button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+
+/* calculator — formulas from the app: kWp = area/10, cost = kWp*1000*₹/W, energy = yield*kWp, savings = energy*tariff */
+const fmtL=v=>v>=1e7?'₹'+(v/1e7).toFixed(2)+' Cr':'₹'+(v/1e5).toFixed(v>=1e6?1:2)+' L';
+function calc(){const A=+$('#cArea').value,Y=+$('#cYield').value,T=+$('#cTariff').value,C=+$('#cCost').value;
+ $('#oArea').textContent=A+' m²';$('#oYield').textContent=Y.toLocaleString('en-IN')+' kWh';$('#oTariff').textContent='₹'+T.toFixed(1)+' / kWh';$('#oCost').textContent='₹'+C+' / W';
+ const kwp=A/10,cost=kwp*1000*C,kwh=Y*kwp,save=kwh*T;
+ $('#rKwp').textContent=(+kwp.toFixed(1)).toLocaleString('en-IN')+' kWp';$('#rKwh').textContent=Math.round(kwh).toLocaleString('en-IN')+' kWh';$('#rCost').textContent=fmtL(cost);$('#rSave').textContent=fmtL(save);$('#rPay').textContent=(cost/save).toFixed(1)+' years'}
+$$('.calc input').forEach(i=>i.addEventListener('input',calc));calc();
+
+/* projects */
+const P=[
+ {"id":"qord","t":"Qord","y":"Jun 2026 – now","c":["product","ai"],"img":"qord-site.jpg","pos":"left top","badge":"Featured","d":"Property Management System as a PWA for homestay hosts. Guest portal, booking model, money journey and an LLM concierge on WhatsApp.","tags":["Next.js","TypeScript","Supabase","LLMs","Vitest"],"list":["Stage-aware guest portal with payments, ID upload and access codes","Booking model for inquiries, holds and confirmed stays, auto-blocking OTA calendars","Money journey on one ledger, Easebuzz, UPI, cash and GST proforma PDFs","LLM concierge with tool calling and Allow / Deny / Needs-confirmation guardrails","517 test cases, including 37 regression tests pinning production bugs"],"links":[["qord.in","https://qord.in"]],"jump":"#qord"},
+ {"id":"acreations","t":"Acreations Farmstays","y":"Nov 2026","c":["product","web"],"img":"acreations-main.jpg","pos":"center","badge":"Contributor","d":"Next.js website for a farmstay brand, connected to Qord. I routed every enquiry into the host's Qord Leads calendar.","tags":["Next.js","TypeScript","Tailwind"],"list":["Sent every website enquiry to Qord so it lands on the host's Leads calendar"],"links":[]},
+ {"id":"heartistry","t":"Heartistry Stays","y":"Sep 2026","c":["product","web"],"img":"heartistry-main.jpg","pos":"center 60%","badge":"Contributor","d":"Booking website for a homestay brand in Bhopal and Jabalpur, connected to Qord. I fixed booking-flow bugs.","tags":["JavaScript","React","Qord API"],"list":["Fixed a crash in the invoice step","Filtered the availability property picker by selected city","Computed blocked calendar days in IST instead of the guest's local time","Allowed same-day turnover as a checkout date"],"links":[]},
+ {"id":"concierge","t":"Concierge Engine Prototype","y":"Sep 2026","c":["ai","product"],"img":"concierge-cover.jpg","pos":"left center","d":"A general-purpose LLM guest concierge for WhatsApp: it understands the guest's goal, plans tools, retrieves evidence from property knowledge, and verifies every answer before replying.","tags":["TypeScript","LLMs","Semantic search","Supabase","Vitest"],"list":["Orchestrator that turns a message into goals (information, recommendation, action, problem, safety)","Deterministic confirmation and tool planning, with clarifying questions when details are missing","Evidence retriever using semantic search over property knowledge, policies and live data","Answer verification step that replies or escalates to the host","FAQ, local guide, amenities and payment-balance answers, plus demo and admin pages","Exported from a Qord branch as a prototype; not deployed to production"],"links":[["GitHub","https://github.com/parshvigoyal/concierge-engine-prototype"]]},
+ {"id":"solariq","t":"SolarIQ Pro","y":"May – Jul 2026","c":["ai"],"img":"solariq-map.jpg","pos":"center","badge":"AICTE IDEA Lab","d":"AI rooftop solar platform: SAM segmentation, OpenCV obstacle removal, PVGIS irradiance, and a feasibility report with ROI.","tags":["Python","PyTorch","SAM","OpenCV","PVGIS","Streamlit"],"list":["Zero-shot rooftop segmentation with Segment Anything, no labelled data","Three-stage view: rooftop mask, obstacle mask, usable-area mask","Installation cost, annual savings and payback period","Downloadable report from an interactive Streamlit dashboard"],"links":[["GitHub","https://github.com/parshvigoyal/solarIQ-pro-by-parshvi"]],"jump":"#solar"},
+ {"id":"pixelflow","t":"PixelFlow","y":"Dec 2025","c":["ai"],"img":"shot-n8n.jpg","d":"An n8n workflow that turns a text prompt into an image with Stable Diffusion XL on Cloudflare Workers AI.","tags":["n8n","Cloudflare Workers AI","SDXL","REST APIs"],"list":["Prompt set in an n8n node, sent through an HTTP Request node","Token auth and JSON payloads to Cloudflare Workers AI","Packaged as an importable n8n workflow (JSON)"],"links":[["GitHub","https://github.com/parshvigoyal/Image_Generation"]]},
+ {"id":"solarv1","t":"Solar Industry AI Assistant","y":"May 2026","c":["ai"],"img":"solar-cv-edges.jpg","d":"The first version of SolarIQ: an OpenCV contour pipeline on satellite images, PVGIS data and LLM-written recommendations.","tags":["Python","OpenCV","PVGIS","Hugging Face","Streamlit"],"list":["Canny edges, dilation and morphology to find the largest rooftop polygon","Pixel-to-area conversion for usable rooftop area","Hugging Face LLM for installation and maintenance recommendations","Tested on LNCT campus buildings"],"links":[["GitHub","https://github.com/parshvigoyal/solar-industry-ai-assistant"]]},
+ {"id":"web3d","t":"3D Creative Website","y":"May 2026","c":["web"],"img":"shot-web3d.jpg","pos":"center","d":"A dark landing page with an embedded Spline 3D scene and scroll animations.","tags":["HTML","CSS","Spline","AOS"],"list":["Interactive 3D object embedded with Spline","Scroll-triggered animations with AOS"],"links":[["GitHub","https://github.com/parshvigoyal/FrontEnd-3D-Creative-Website"]]},
+ {"id":"myntra","t":"Myntra Clone","y":"May 2026","c":["web"],"img":"shot-myntra.jpg","badge":"First repo","pos":"left top","d":"A Myntra-inspired e-commerce frontend with product listings, bag and search.","tags":["HTML","CSS","JavaScript"],"list":["Responsive homepage and product grid","Bag page driven by JavaScript data","Search and category navigation"],"links":[["GitHub","https://github.com/parshvigoyal/myntra-clone-by-parshvi"]]}
+];
+const grid=$('#grid');
+grid.innerHTML=P.map(p=>`<button class="pj" data-id="${p.id}" data-c="${p.c.join(' ')}" aria-haspopup="dialog">
+ <div class="th">${p.badge?`<span class="badge">${p.badge}</span>`:''}${p.img?`<img src="img/${p.img}" alt="" style="object-position:${p.pos||'top'}">`:`<div class="gen" style="background:var(--accent)">${p.gen}</div>`}</div>
+ <div class="bd"><div class="meta"><span>${p.c.map(c=>({ai:'AI / ML',product:'Product',web:'Web',learn:'Learning'})[c]).join(' · ')}</span><span>${p.y}</span></div><h3>${p.t}</h3><p>${p.d}</p><div class="tags">${p.tags.slice(0,4).map(t=>`<span>${t}</span>`).join('')}</div></div></button>`).join('');
+$$('.filters .tab').forEach(b=>b.addEventListener('click',()=>{const f=b.dataset.f;$$('.filters .tab').forEach(x=>{x.setAttribute('aria-pressed',x===b);x.setAttribute('aria-selected',x===b)});
+ $$('.pj').forEach((c,i)=>{const show=f==='all'||c.dataset.c.split(' ').includes(f);c.classList.toggle('out',!show);if(show&&!reduce){c.animate([{transform:'translateY(18px) scale(.98)',opacity:.3},{transform:'none',opacity:1}],{duration:450,delay:i*30,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'})}})}));
+/* tilt */
+if(matchMedia('(hover:hover)').matches&&!reduce)$$('.pj').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-4px)`});c.addEventListener('mouseleave',()=>c.style.transform='')});
+/* modal */
+const dlg=$('#modal');
+grid.addEventListener('click',e=>{const c=e.target.closest('.pj');if(!c)return;const p=P.find(x=>x.id===c.dataset.id);
+ $('#mImg').innerHTML=p.img?`<img src="img/${p.img}" alt="${p.t}" style="object-position:${p.pos||'top'}">`:`<div style="height:160px;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-family:var(--display);font-weight:800;font-size:4rem">${p.gen}</div>`;
+ $('#mMeta').textContent=p.y+' · '+p.c.map(c=>({ai:'AI / ML',product:'Product',web:'Web',learn:'Learning'})[c]).join(' · ');$('#mTitle').textContent=p.t;$('#mDesc').textContent=p.d;
+ $('#mList').innerHTML=p.list.map(l=>`<li>${l}</li>`).join('');$('#mTags').innerHTML=p.tags.map(t=>`<span>${t}</span>`).join('');
+ $('#mLinks').innerHTML=(p.jump?`<a class="btn solid" href="${p.jump}" data-jump style="background:var(--accent);color:var(--ink);border-color:var(--accent)">Read the case study</a>`:'')+p.links.map(l=>`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${l[0]} ↗</a>`).join('');
+ dlg.showModal()});
+$('#mClose').addEventListener('click',()=>dlg.close());
+dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.closest('[data-jump]'))dlg.close()});
+
+/* copy email */
+$('#copyMail').addEventListener('click',async()=>{try{await navigator.clipboard.writeText('goyalparshvi@gmail.com');$('#copied').textContent='Copied ✓'}catch(e){$('#copied').textContent='Select the address to copy it'}setTimeout(()=>$('#copied').textContent='',2400)});
+</script>
+</body>
+</html>
